@@ -1,0 +1,130 @@
+openapi: 3.1.0
+info:
+  title: Performance API
+  description: |-
+    Provides performance metrics from the Data Collection Pipelines
+
+  version: "1.0.0"
+paths:
+  /organisation-summaries:
+    get:
+      tags:
+        - organisation-summaries
+      summary: Provides collection metrics for each organisation
+      description: Metrics include the number of datasets provided, the number of datasets with warnings and the number with errors
+      operationId: getOrganisationSummaries
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrganisationSummary'
+  /organisation-summaries/{organisationId}:
+    get:
+      tags:
+        - organisation-summaries
+      summary: Provides collection metrics for each dataset provided by a given organisation
+      description: Metrics include details of the datasets provided including the endpoint record, warning and error counts
+      operationId: getOrganisationDatasetSummaries
+      parameters:
+        - name: organisationId
+          in: path
+          description: ID of organisation
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrganisationDatasetSummary'
+        '400':
+          description: Invalid organisation ID supplied
+        '404':
+          description: Organisation summary not found
+components:
+  schemas:
+    OrganisationSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          examples: ["BOR"]
+        name:
+          type: string
+          examples: ["Borchester Borough County"]
+        datasetCounts:
+          $ref: '#/components/schemas/DatasetCounts'
+    DatasetCounts:
+      description: Provides a count of datasets provided as well as the number of datasets with warnings and/or errors
+      type: object
+      properties:
+        active:
+          description: The count of active datasets. An active dataset means that an endpoint has been provided which does not have an end date
+          type: integer
+          format: int32
+          examples: [20]
+        warnings:
+          description: The count of datasets with warnings. A dataset will be included in this count if at least one warning was reported from the last run of the data collection pipeline
+          type: integer
+          format: int32
+          examples: [5]
+        errors:
+          description: The count of datasets with errors. A dataset will be included in this count if at least one error was reported from the last run of the data collection pipeline
+          type: integer
+          format: int32
+          examples: [3]
+    OrganisationDatasetSummary:
+      type: object
+      properties:
+        organisationId:
+          type: string
+          examples: ["BOR"]
+        datasset:
+          type: string
+          examples: ["Borchester Borough County"]
+        endpointUrl:
+          type: string
+          examples: ["https://someplace.com/data.csv"]
+        documentationUrl:
+          type: string
+          examples: ["https://someplace.com/data.html"]
+        endpointProvidedDate:
+          type: string
+          format: date-time
+        dataLastModified:
+          type: string
+          format: date-time
+        dataLastAccessed:
+          type: string
+          format: date-time
+        recordCount:
+          type: integer
+          format: int32
+          examples: [250]
+        warningsCount:
+          type: integer
+          format: int32
+          examples: [2]
+        errorCount:
+          type: integer
+          format: int32
+          examples: [1]
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
