@@ -6,11 +6,11 @@ info:
 
   version: "1.0.0"
 paths:
-  /organisation-summaries:
+  /organisations:
     get:
       tags:
-        - organisation-summaries
-      summary: Provides collection metrics for each organisation
+        - organisations
+      summary: Returns summary metrics for each organisation that provides data
       description: Metrics include the number of datasets provided, the number of datasets with warnings and the number with errors
       operationId: getOrganisationSummaries
       responses:
@@ -22,17 +22,17 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/OrganisationSummary'
-  /organisation-summaries/{organisationId}:
+  /organisations/{id}/datasets:
     get:
       tags:
-        - organisation-summaries
-      summary: Provides collection metrics for each dataset provided by a given organisation
+        - organisation-datasets
+      summary:  Returns metrics for each dataset provided by a given organisation
       description: Metrics include details of the datasets provided including the endpoint record, warning and error counts
       operationId: getOrganisationDatasetSummaries
       parameters:
-        - name: organisationId
+        - name: id
           in: path
-          description: ID of organisation
+          description: The unique identifier of an organisation
           required: true
           schema:
             type: integer
@@ -64,7 +64,7 @@ components:
         datasetCounts:
           $ref: '#/components/schemas/DatasetCounts'
     DatasetCounts:
-      description: Provides a count of datasets provided as well as the number of datasets with warnings and/or errors
+      description: A count of datasets provided as well as the number of datasets with warnings and/or errors
       type: object
       properties:
         active:
