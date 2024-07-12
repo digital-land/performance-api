@@ -11,6 +11,7 @@ INSERT INTO organisations (id, name, dataset_active_count, dataset_warning_count
   ('NPT', 'Neath Port Talbot Planning Authority', 30, 5, 2);
 
 CREATE TABLE datasets (
+  /*id BIGSERIAL PRIMARY KEY,*/
   organisation_id VARCHAR(100) REFERENCES organisations(id),
   dataset VARCHAR(100),
   record_count INTEGER,

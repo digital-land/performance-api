@@ -31,3 +31,11 @@ services:
       - "8080"
     environment:
       API_URL: http://localhost:3000/
+
+  db-populator:
+    build:
+      context: .
+      dockerfile: db-populator/Dockerfile
+    environment:
+      DATABASE_URL: postgresql://app_user:password@db:5432/app_db
+    restart: on-failure
