@@ -5,8 +5,11 @@ Provides performance metrics from the Data Collection Pipelines
 
 As part of Trello ticket, a prototype version of the Performance API has been implemented using PostgREST.
 
-This prototype version mounts the init.sql file to a Postgres docker container to create the initial schema and insert
-some example data.
+This prototype runs with Docker Compose.  Some example data is provided via the init.sql file which is mounted
+to a Postgres DB container. 
+
+The db-populator container runs once at startup.  It fetches real data from the digital-land database via datasette and
+inserts this into Postgres DB.
 
 ### Pre-requisites
 
